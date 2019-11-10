@@ -9,7 +9,6 @@ function Import-FitekDimension {
         Name      : Description
         EndDate   : 2019-11-02
         StartDate : 2019-11-02
-        AuthToken : AuthToken
         Code      : Code
     .EXAMPLE
         Import-FitekDimension -Id 'Dep' -AuthToken 'SOME_TOKEN' -Data $data
