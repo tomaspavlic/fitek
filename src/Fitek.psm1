@@ -26,12 +26,20 @@ function Import-FitekDimension {
 
         [Parameter(Mandatory = $false)]
         [string]
-        $AuthToken
+        $AuthToken,
+
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $PropagateToChild = $false,
+
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $DeleteUnused = $false
     )
 
     process {
         $apiUri = $MyInvocation.MyCommand.Module.PrivateData.ApiUri
-        $url = "{0}/dstream/ExportService/ErpDataExchangeService.svc/DimensionsImport.v2?AuthToken={1}&propagateToChild=false&deleteUnused=true" -f $apiUri, $AuthToken
+        $url = "{0}/dstream/ExportService/ErpDataExchangeService.svc/DimensionsImport.v2?AuthToken={1}&propagateToChild={2}&deleteUnused={3}" -f $apiUri, $AuthToken, $PropagateToChild, $DeleteUnused
 
         $request = New-Object psobject -Property @{
             Dimensions = $Data
@@ -41,7 +49,12 @@ function Import-FitekDimension {
 
         $body = ($request | ConvertTo-Json)
 
-        Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body $body
+        try {
+            $result = Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body $body
+            $result.ImportResponse
+        } catch {
+            Write-Error $_.Exception
+        }
     }
 }
 
@@ -69,18 +82,33 @@ function Import-FitekVatCode {
 
         [Parameter(Mandatory = $true)]
         [string]
-        $AuthToken
+        $AuthToken,
+
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $PropagateToChild = $false,
+
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $DeleteUnused = $false
     )
 
     process {
         $apiUri = $MyInvocation.MyCommand.Module.PrivateData.ApiUri
-        $url = '{0}/dstream/ExportService/ErpDataExchangeService.svc/VatCodesImport.v2?AuthToken={1}&propagateToChild=false&deleteUnused=true' -f $apiUri, $AuthToken
+        $url = '{0}/dstream/ExportService/ErpDataExchangeService.svc/VatCodesImport.v2?AuthToken={1}&propagateToChild={2}&deleteUnused={3}' -f $apiUri, $AuthToken, $PropagateToChild, $DeleteUnused
 
         $request = New-Object psobject -Property @{
             Id = [GUID]::NewGuid().Guid
             VatCodes = $Data
         }
 
-        Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body ($request | ConvertTo-Json)
+        $body = ($request | ConvertTo-Json)
+
+        try {
+            $result = Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body $body
+            $result.ImportResponse
+        } catch {
+            Write-Error $_.Exception
+        }
     }
 }
