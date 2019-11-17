@@ -31,7 +31,7 @@ function Import-FitekDimension {
 
     process {
         $apiUri = $MyInvocation.MyCommand.Module.PrivateData.ApiUri
-        $url = "{0}/ExportService/ErpDataExchangeService.svc/DimensionsImport.v2?AuthToken={1}&propagateToChild=false&deleteUnused=true" -f $apiUri, $AuthToken
+        $url = "{0}/dstream/ExportService/ErpDataExchangeService.svc/DimensionsImport.v2?AuthToken={1}&propagateToChild=false&deleteUnused=true" -f $apiUri, $AuthToken
 
         $request = New-Object psobject -Property @{
             Dimensions = $Data
