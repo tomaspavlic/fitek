@@ -41,7 +41,7 @@ function Import-FitekDimension {
 
         $body = ($request | ConvertTo-Json)
 
-        Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body $body | Out-Null
+        Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body $body
     }
 }
 
@@ -81,6 +81,6 @@ function Import-FitekVatCode {
             VatCodes = $Data
         }
 
-        Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body ($request | ConvertTo-Json) | Out-Null
+        Invoke-RestMethod $url -Method Post -ContentType "application/json; charset=utf-8" -Body ($request | ConvertTo-Json)
     }
 }
