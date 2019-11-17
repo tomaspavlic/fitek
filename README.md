@@ -26,16 +26,16 @@ Import-Module Fitek
 
 $dimension1 = New-Object psobject -Property @{
     Name      = "Description"
-    EndDate   = "2019-11-02"
-    StartDate = "2019-11-02"
+    EndDate   = "2019-11-02T00:00:00.000Z"
+    StartDate = "2019-11-02T00:00:00.000Z"
     Code      = "Code"
 }
 
-$dimensions = @()
+$dimensions = New-Object System.Collections.ArrayList($null)
 $dimensions.Add($dimension1)
 
 # Import dimension
-Import-FitekDimension -AuthToken 'b12cf33b-0c4b-4d9e-9aa0-e238069b3fe7' -Data $dimensions
+Import-FitekDimension -AuthToken 'b12cf33b-0c4b-4d9e-9aa0-e238069b3fe7' -Data $dimensions -Id 'Dep'
 ```
 
 ### Disclaimer
